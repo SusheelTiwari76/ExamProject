@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Camera</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center; /* Center the container horizontally */
+            align-items: center; /* Center the container vertically */
+            height: 100vh; /* Make the container full height of the viewport */
+            background-color: #f0f0f0; /* Set a background color */
+        }
+        #camera-container {
+            width: 80%; /* Adjust the width of the container */
+            max-width: 600px; /* Limit the maximum width */
+            text-align: center; /* Center the contents horizontally */
+        }
+        video {
+            width: 100%;
+            height: auto;
+            border-radius: 10px; /* Add some border radius for a nice look */
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.2); /* Add a subtle shadow */
+        }
+        button {
+            margin-top: 20px; /* Add some space between the video and the button */
+            padding: 10px 20px;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+    <div id="camera-container">
+        <video id="video" autoplay></video>
+        <button id="captureButton">Capture</button>
+    </div>
+
+    <script>
+        const video = document.getElementById('video');
+        const captureButton = document.getElementById('captureButton');
+
+        // Access the device camera and stream to video element
+        async function setupCamera() {
+            try {
+                const stream = await navigator.mediaDevices.getUserMedia({ video: true });
+                video.srcObject = stream;
+            } catch (err) {
+                console.error('Error accessing the camera: ', err);
+            }
+        }
+
+        captureButton.addEventListener('click', async () => {
+            const canvas = document.createElement('canvas');
+            canvas.width = video.videoWidth;
+            canvas.height = video.videoHeight;
+            const context = canvas.getContext('2d');
+            context.drawImage(video, 0, 0, canvas.width, canvas.height);
+            const data = canvas.toDataURL('image/jpeg');
+
+            // Store the image data in local storage
+            localStorage.setItem('photo', data);
+
+            // Show message
+            window.opener.postMessage('Picture captured successfully', '*');
+
+            // Close the camera window
+            window.close();
+        });
+
+        setupCamera();
+    </script>
+</body>
+</html>

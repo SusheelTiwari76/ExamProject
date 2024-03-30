@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Exam Instructions</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0; /* Remove default margin */
+            padding: 0; /* Remove default padding */
+            background-color: #9b8585;
+            background-image: url('mit-2.jpg'); /* Replace 'your_image_path.jpg' with the path to your image */
+    background-size: cover;
+    position: sticky; /* Cover the entire background */
+        }
+        .container {
+    max-width: 1000px;
+    margin: 0 auto;
+    padding: 20px;
+    border: 1px solid #090909;
+    border-radius: 5px;
+    display: flex;
+    background-color: rgba(1, 8, 14, 0.8); /* Adjust the opacity (0.7) to make the background slightly darker */
+    background-size: cover; /* Cover the entire background */
+}
+        .left-section {
+            flex: 1; /* Take up one-third of the container */
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start; /* Align items to the start (left) */
+        }
+        .right-section {
+            flex: 2; /* Take up two-thirds of the container */
+            display: flex;
+            flex-direction: column;
+            align-items: flex-end; /* Align items to the end (right) */
+            padding-left: 20px; /* Add some spacing between sections */
+            
+        }
+        .logo-container {
+            margin-bottom: 20px; /* Add margin for spacing */
+        }
+        .profile-section {
+            margin-bottom: 20px; /* Add margin at the bottom */
+            text-align: left; /* Align content to the left */
+            color: #f6ebeb;
+        }
+        .instructions {
+            text-align: left; /* Align instructions to the left */
+            margin-left: auto; /* Push instructions to the right */
+            padding-left: 20px; /* Add padding to align text with the left section */
+            border-left: 2px solid #ccc; /* Add left border for visual separation */
+            color: #f6ebeb;
+          
+        }
+        .instructions h3 {
+            margin-top: 0; /* Remove default margin for consistency */
+        }
+        .profile-section img {
+            width: 150px; /* Increase the width of the photo */
+            height: 150px; /* Increase the height of the photo */
+            margin-top: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            display: block;
+            object-fit: cover; /* Maintain aspect ratio */
+        }
+        .logo {
+            max-width: 150px;
+            height: auto;
+        }
+        .profile-details {
+            display: flex;
+            align-items: center;
+            margin-bottom: 10px;
+            color: #f6ebeb;
+        }
+        .profile-details label {
+            width: 120px;
+            margin-right: 10px;
+            color: #f6ebeb;
+        }
+        .start-exam-button {
+            background-color: #007bff;
+            color: #f6ebeb;
+            border: none;
+            cursor: pointer;
+            padding: 10px 20px;
+            margin-top: 20px; /* Move the button down */
+        }
+        .start-exam-button:hover {
+            background-color: #0056b3;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="left-section">
+            <div class="logo-container">
+                <img class="logo" src="logo.png" alt="College Logo">
+            </div>
+            <div class="profile-section" id="profileSection">
+                <h2>Profile</h2>
+                <!-- Profile information will be displayed here -->
+            </div>
+        </div>
+        <div class="right-section">
+            <div class="instructions">
+                <h3>Exam Instructions</h3>
+                <p>
+                    1. Please read all questions carefully before answering.
+                </p>
+                <p>
+                    2. You have 20 minutes to complete the exam.
+                </p>
+                <p>
+                    3. Answer all questions. There is no negative marking.
+                </p>
+                <p>
+                    4. You have 20 minutes to complete the exam.
+                </p>
+                <p>
+                    5. You have 20 minutes to complete the exam.
+                </p>
+                <p>
+                    6. You have 20 minutes to complete the exam.
+                </p>
+                <p>
+                    7. You have 20 minutes to complete the exam.
+                </p>
+                <p>
+                    8. You have 20 minutes to complete the exam.
+                </p>
+                <p>
+                    9. You have 20 minutes to complete the exam.
+                </p>
+                <p>
+                    10. You have 20 minutes to complete the exam.
+                </p>
+
+                <button class="start-exam-button" id="startExamButton">Start Exam</button>
+            </div>
+        </div>
+    </div>
+    <script>
+        window.addEventListener('DOMContentLoaded', (event) => {
+            // Retrieve form data from local storage
+            const formData = JSON.parse(localStorage.getItem('formData'));
+            if (!formData) {
+                alert('Form data not found');
+                return;
+            }
+
+            // Display profile information
+            const profileSection = document.getElementById('profileSection');
+            for (const [key, value] of Object.entries(formData)) {
+                const profileDetails = document.createElement('div');
+                profileDetails.classList.add('profile-details');
+                profileDetails.innerHTML = `
+                    <label>${key.charAt(0).toUpperCase() + key.slice(1)}:</label>
+                    <div>${value}</div>
+                `;
+                profileSection.appendChild(profileDetails);
+            }
+
+            // Display photo if available
+            const photoDataUrl = localStorage.getItem('photo');
+            if (photoDataUrl) {
+                const photoLabel = document.createElement('div');
+                photoLabel.classList.add('profile-details');
+                photoLabel.innerHTML = `
+                    <label>Photo:</label>
+                    <img src="${photoDataUrl}" alt="Photo">
+                `;
+                profileSection.appendChild(photoLabel);
+            } else {
+                alert('Photo not found');
+            }
+
+            // Clear local storage
+            localStorage.removeItem('formData');
+            localStorage.removeItem('photo');
+
+            // Start exam button event listener
+            const startExamButton = document.getElementById('startExamButton');
+            startExamButton.addEventListener('click', function() {
+                // Redirect to the exam page
+                window.location.href = 'exam.html';
+            });
+        });
+    </script>
+</body>
+</html>

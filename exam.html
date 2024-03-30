@@ -1,0 +1,377 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Exam</title>
+    <link rel="stylesheet" type="text/css" href="styles.css">
+    <style>
+        /* Additional CSS styles */
+        #resultDisplay {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            font-size: 36px;
+            font-weight: bold;
+            text-align: center;
+            padding: 20px;
+            border: 2px solid black;
+            background-color: #f0f0f0;
+            z-index: 9999;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="categories">
+            <h2>Categories</h2>
+            <ul>
+                <li><button onclick="startExam('hardware')">Hardware</button></li>
+                <li><button onclick="startExam('software')">Software</button></li>
+                <li><button onclick="startExam('networking')">Networking</button></li>
+            </ul>
+        </div>
+        <div class="questions">
+            <h2>Questions</h2>
+            <div id="questionContainer">
+                <!-- Question will be loaded here dynamically -->
+            </div>
+            <div id="navigationButtons">
+                <!-- Navigation buttons will be added here dynamically -->
+            </div>
+        </div>
+    </div>
+
+    <div class="timer" id="timer">00:00</div>
+
+    <script>
+        let currentQuestionIndex = 0;
+        let questions = [];
+        let userSelections = [];
+        let timerInterval; // Timer interval variable
+
+        function startExam(category) {
+            loadCategory(category);
+            startTimer();
+        }
+
+        function startTimer() {
+            const duration = 10 * 60; // 10 minutes in seconds
+            let timeLeft = duration;
+
+            const timerDisplay = document.getElementById('timer');
+
+            timerInterval = setInterval(() => {
+                const minutes = Math.floor(timeLeft / 60);
+                let seconds = timeLeft % 60;
+
+                seconds = seconds < 10 ? '0' + seconds : seconds;
+
+                timerDisplay.textContent = `${minutes}:${seconds}`;
+
+                if (timeLeft === 0) {
+                    clearInterval(timerInterval);
+                    submitExam();
+                } else {
+                    timeLeft--;
+                }
+            }, 1000); // Update timer every second
+        }
+
+        function loadCategory(category) {
+            currentQuestionIndex = 0;
+            const questionContainer = document.getElementById('questionContainer');
+            questionContainer.innerHTML = '';
+            userSelections = [];
+
+            // Load questions based on category
+            if (category === 'hardware') {
+                questions = loadHardwareQuestions();
+            } else if (category === 'software') {
+                questions = loadSoftwareQuestions();
+            } else if (category === 'networking') {
+                questions = loadNetworkingQuestions();
+            }
+
+            // Display first question
+            displayQuestion();
+        }
+
+        function displayQuestion() {
+            const questionContainer = document.getElementById('questionContainer');
+            questionContainer.innerHTML = '';
+
+            const currentQuestion = questions[currentQuestionIndex];
+
+            const questionElement = document.createElement('div');
+            questionElement.innerHTML = `
+                <p>${currentQuestion.question}</p>
+                ${currentQuestion.options.map((option, index) => `
+                    <label><input type="radio" name="answer" value="${index}" onclick="storeUserSelection(${index})"> ${option}</label><br>
+                `).join('')}
+                <br>
+            `;
+            questionContainer.appendChild(questionElement);
+
+            // Update navigation buttons
+            updateNavigationButtons();
+        }
+
+        function updateNavigationButtons() {
+            const navigationButtons = document.getElementById('navigationButtons');
+            navigationButtons.innerHTML = '';
+
+            const prevButton = document.createElement('button');
+            prevButton.textContent = 'Previous';
+            prevButton.onclick = goToPreviousQuestion;
+            prevButton.disabled = currentQuestionIndex === 0;
+            navigationButtons.appendChild(prevButton);
+
+            const nextButton = document.createElement('button');
+            nextButton.textContent = 'Next';
+            nextButton.onclick = goToNextQuestion;
+            nextButton.disabled = currentQuestionIndex === questions.length - 1;
+            navigationButtons.appendChild(nextButton);
+
+            if (currentQuestionIndex === questions.length - 1) {
+                const submitButton = document.createElement('button');
+                submitButton.textContent = 'Submit Exam';
+                submitButton.onclick = submitExam;
+                navigationButtons.appendChild(submitButton);
+            }
+        }
+
+        function storeUserSelection(index) {
+            // Store the user's selection for the current question
+            userSelections[currentQuestionIndex] = index;
+        }
+
+        function goToPreviousQuestion() {
+            if (currentQuestionIndex > 0) {
+                currentQuestionIndex--;
+                displayQuestion();
+            }
+        }
+
+        function goToNextQuestion() {
+            if (currentQuestionIndex < questions.length - 1) {
+                currentQuestionIndex++;
+                displayQuestion();
+            }
+        }
+
+        function loadHardwareQuestions() {
+            return [
+                // Add hardware questions here
+                {
+                // Add hardware questions here
+                question: "What does CPU stand for in computing?",
+                    options: ["Central Processing Unit", "Computer Personal Unit", "Central Personal Unit", "Computer Processing Unit"],
+                    correctAnswer: 0
+                },
+                {
+                    question: "Which component of a computer is responsible for storing data long-term?",
+                    options: ["Hard Disk Drive (HDD)", "Random Access Memory (RAM)", "Central Processing Unit (CPU)", "Solid State Drive (SSD)"],
+                    correctAnswer: 0
+                },
+                {
+                    question: "What is the function of RAM in a computer?",
+                    options: ["Temporary data storage", "Permanent data storage", "Performing calculations", "Displaying graphics"],
+                    correctAnswer: 0
+                },
+                {
+                    question: "What is the purpose of a graphics card in a computer?",
+                    options: ["Rendering graphics", "Storing data", "Performing calculations", "Network communication"],
+                    correctAnswer: 0
+                },
+                {
+                    question: "Which unit is used to measure the speed of a processor?",
+                    options: ["Hertz (Hz)", "Gigabyte (GB)", "Megabyte (MB)", "Volt (V)"],
+                    correctAnswer: 0
+                },
+                {
+                    question: "What does BIOS stand for in computing?",
+                    options: ["Basic Input/Output System", "Binary Operating System", "Backward Input/Output System", "Base Input/Output System"],
+                    correctAnswer: 0,
+                },
+                {
+                    question: "What is the primary function of a motherboard?",
+                    options: ["Connect various computer components", "Perform calculations", "Store data", "Render graphics"],
+                    correctAnswer: 0,
+                },
+                {
+                    question: "What does GPU stand for in computing?",
+                    options: ["Graphics Processing Unit", "General Processing Unit", "Gaming Processing Unit", "Graphical Personal Unit"],
+                    correctAnswer: 0,
+                },
+                {
+                    question: "What is the role of a PSU in a computer?",
+                    options: ["Converts AC power to DC power", "Stores data", "Processes graphics", "Manages network communication"],
+                    correctAnswer: 0,
+                },
+                {
+                    question: "Which interface is commonly used to connect external devices to a computer?",
+                    options: ["USB (Universal Serial Bus)", "LAN (Local Area Network)", "HDMI (High Definition Multimedia Interface)", "VGA (Video Graphics Array)"],
+                    correctAnswer: 0,
+
+                }
+
+
+
+
+            ];
+        }
+
+        function loadSoftwareQuestions() {
+            return [
+                // Add software questions here
+                {
+                    question: "What is the role of an operating system in a computer?",
+                    options: ["Manage hardware resources", "Design user interfaces", "Perform calculations", "Develop software applications"],
+                    correctAnswer: 0
+                },
+                {
+                    question: "What is the difference between application software and system software?",
+                    options: ["System software manages hardware resources, while application software performs specific tasks.", "System software develops software applications, while application software manages hardware resources.", "System software is used for gaming, while application software is used for business purposes.", "There is no difference between them."],
+                    correctAnswer: 0
+                },
+                {
+                    question: "What programming language is commonly used for web development?",
+                    options: ["JavaScript", "Python", "C++", "Java"],
+                    correctAnswer: 0
+                },
+                {
+                    question: "What is the purpose of antivirus software?",
+                    options: ["Protect against malicious software", "Optimize system performance", "Develop software applications", "Create user interfaces"],
+                    correctAnswer: 0
+                },
+                {
+                    question: "What does GUI stand for in computing?",
+                    options: ["Graphical User Interface", "General User Interface", "Gaming User Interface", "Graphical User Integration"],
+                    correctAnswer: 0
+                },
+                {
+                    question: "Which software is used for creating and editing documents?",
+                    options: ["Word processor", "Spreadsheet software", "Presentation software", "Database software"],
+                    correctAnswer: 0,
+                },
+                {
+                    question: "What is the purpose of a compiler?",
+                    options: ["Translate source code into machine code", "Protect against malware", "Create user interfaces", "Manage system resources"],
+                    correctAnswer: 0,
+                },
+                {
+                    question: "Which programming language is often used for system administration and automation?",
+                    options: ["Python", "JavaScript", "C++", "Java"],
+                    correctAnswer: 0,
+                },
+                {
+                    question: "What is the purpose of version control software?",
+                    options: ["Manage changes to source code", "Optimize system performance", "Create graphical user interfaces", "Develop web applications"],
+                    correctAnswer: 0,
+                },
+                {
+                    question: "What is the primary function of an IDE?",
+                    options: ["Integrated Development Environment", "Internet Development Environment", "Input/Output Development Environment", "Integrated Database Environment"],
+                    correctAnswer: 0,
+                }
+
+
+            ];
+        }
+
+        function loadNetworkingQuestions() {
+            return [
+                // Add networking questions here
+                {
+                    question: "What is a LAN in computer networking?",
+                    options: ["Local Area Network", "Long Area Network", "Large Array Network", "Lightweight Area Network"],
+                    correctAnswer: 0
+                },
+                {
+                    question: "What is the difference between a router and a modem?",
+                    options: ["A router connects multiple devices to a network, while a modem connects a network to the internet.", "A modem connects multiple devices to a network, while a router connects a network to the internet.", "There is no difference between them.", "A router and a modem are the same device."],
+                    correctAnswer: 0
+                },
+                {
+                    question: "What does TCP/IP stand for in computer networking?",
+                    options: ["Transmission Control Protocol/Internet Protocol", "Time Control Protocol/Internet Protocol", "Transmission Configuration Protocol/Internet Protocol", "Time Configuration Protocol/Internet Protocol"],
+                    correctAnswer: 0
+                },
+                {
+                    question: "What is the purpose of DNS in computer networking?",
+                    options: ["Translate domain names to IP addresses", "Secure network communication", "Manage network traffic", "Control internet access"],
+                    correctAnswer: 0
+                },
+                {
+                    question: "What is the difference between TCP and UDP protocols?",
+                    options: ["TCP is connection-oriented, while UDP is connectionless.", "TCP is connectionless, while UDP is connection-oriented.", "TCP and UDP have the same protocol.", "TCP and UDP are used for different types of networks."],
+                    correctAnswer: 0
+                },
+                {
+                    question: "What is a firewall in the context of computer networking?",
+                    options: ["A security device that monitors and controls incoming and outgoing network traffic", "A device used to amplify network signals", "A type of network cable", "A device that connects multiple networks together"],
+                    correctAnswer: 0,
+                },
+                {
+                    question: "What is a MAC address used for in networking?",
+                    options: ["Identify devices on a network", "Translate domain names to IP addresses", "Establish secure connections", "Manage network traffic"],
+                    correctAnswer: 0,
+                },
+                {
+                    question: "What does DHCP stand for in computer networking?",
+                    options: ["Dynamic Host Configuration Protocol", "Domain Host Configuration Protocol", "Dynamic Hardware Configuration Protocol", "Domain Hardware Configuration Protocol"],
+                    correctAnswer: 0,
+                },
+                {
+                    question: "What is the purpose of NAT in networking?",
+                    options: ["Translate private IP addresses to public IP addresses", "Establish secure connections", "Encrypt network traffic", "Allocate IP addresses to devices"],
+                    correctAnswer: 0,
+                },
+                {
+                    question: "What is a VLAN in networking?",
+                    options: ["Virtual Local Area Network", "Virtual Large Area Network", "Variable Local Area Network", "Variable Large Area Network"],
+                    correctAnswer: 0,
+                }
+
+
+
+
+            ];
+        }
+
+        function submitExam() {
+            clearInterval(timerInterval); // Clear timer interval when submitting exam
+            let score = 0;
+            const totalQuestions = questions.length;
+
+            // Loop through questions and compare user selections with correct answers
+            for (let i = 0; i < totalQuestions; i++) {
+                const currentQuestion = questions[i];
+                const userSelection = userSelections[i];
+                if (userSelection !== undefined && userSelection === currentQuestion.correctAnswer) {
+                    score++;
+                }
+            }
+
+            // Display result
+            const resultDisplay = document.createElement('div');
+            resultDisplay.id = 'resultDisplay';
+            resultDisplay.textContent = `You scored ${score} out of ${totalQuestions}.`;
+            document.body.appendChild(resultDisplay);
+
+            // Add button to return to the main screen
+            const backButton = document.createElement('button');
+            backButton.textContent = 'Return to Main Screen';
+            backButton.onclick = returnToMainScreen;
+            resultDisplay.appendChild(backButton);
+        }
+
+        function returnToMainScreen() {
+            // Redirect to the main screen (first.html)
+            window.location.href = 'first.html';
+        }
+    </script>
+</body>
+</html>

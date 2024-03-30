@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Candidate Information</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #9b8585;
+            background-image: url('mit-2.jpg'); /* Replace 'your_image_path.jpg' with the path to your image */
+            background-size: cover;
+            position: sticky; /* Cover the entire background */
+        }
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 20px;
+            border: 1px solid #090909;
+            border-radius: 5px;
+            display: flex;
+            background-color: rgba(1, 8, 14, 0.8); /* Adjust the opacity (0.7) to make the background slightly darker */
+            background-size: cover; /* Cover the entire background */
+        }
+        .left-section {
+            flex: 1; /* Take up one-third of the container */
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start; /* Align items to the start (left) */
+        }
+        .right-section {
+            flex: 2; /* Take up two-thirds of the container */
+            display: flex;
+            flex-direction: column;
+            align-items: flex-end; /* Align items to the end (right) */
+            padding-left: 20px; /* Add some spacing between sections */
+        }
+        .logo-container {
+            margin-bottom: 20px; /* Add margin for spacing */
+        }
+        .profile-section {
+            margin-bottom: 20px; /* Add margin at the bottom */
+            text-align: left; /* Align content to the left */
+            color: #f6ebeb;
+        }
+        .instructions {
+            font-size: 15px;
+            text-align: left; /* Align instructions to the left */
+            margin-left: auto; /* Push instructions to the right */
+            padding-left: 20px; /* Add padding to align text with the left section */
+            border-left: 2px solid #ccc; /* Add left border for visual separation */
+            color: #f6ebeb;
+        }
+        .instructions h3 {
+            font-size: 30px;
+            margin-top: 0; /* Remove default margin for consistency */
+        }
+        .profile-section img {
+            width: 150px; /* Increase the width of the photo */
+            height: 150px; /* Increase the height of the photo */
+            margin-top: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            display: block;
+            object-fit: cover; /* Maintain aspect ratio */
+        }
+        .logo {
+            max-width: 150px;
+            height: auto;
+        }
+        .profile-details {
+            display: flex;
+            align-items: center;
+            margin-bottom: 10px;
+            color: #f6ebeb;
+        }
+        .profile-details label {
+            width: 120px;
+            margin-right: 10px;
+            color: #f6ebeb;
+        }
+        .start-exam-button {
+            background-color: #007bff;
+            color: #f6ebeb;
+            border: none;
+            cursor: pointer;
+            padding: 10px 20px;
+            margin-top: 20px; /* Move the button down */
+        }
+        .start-exam-button:hover {
+            background-color: #0056b3;
+        }
+        .accept-checkbox {
+            margin-top: 10px;
+            margin-bottom: 10px;
+            color: #f6ebeb;
+            font-size: 18px; /* Increase font size */
+        }
+        .accept-checkbox-label {
+            font-style: italic;
+            color: rgb(53, 0, 139);
+            font-size: 20px; /* Increase font size for the label */
+            color: #f6ebeb;
+        }
+        .accept-checkbox:checked {
+            color: green; /* Change color to green when checked */
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="left-section">
+            <div class="logo-container">
+                <img class="logo" src="logo.png" alt="College Logo">
+            </div>
+            <div class="profile-section" id="profileSection">
+                <h2>Profile</h2>
+                <!-- Profile information will be displayed here -->
+            </div>
+        </div>
+        <div class="right-section">
+            <div class="instructions">
+                <h3>Exam Instructions</h3>
+                <p>
+                    1. Please read all questions carefully before answering.
+                </p>
+                <p>
+                    2. You have 10 minutes to complete the exam.
+                </p>
+                <p>
+                    3. Answer all questions. There is no negative marking.
+                </p>
+                <p>
+                    4.Manage your time wisely and attempt to answer all questions.
+                </p>
+                <p>
+                    5. Use next button to move between questions.
+                </p>
+                <p>
+                    6.Stay focused and minimize distractions.
+                </p>
+                <p>
+                    7. Monitor the timer and pace yourself accordingly.
+                </p>
+                <p>
+                    8. Select only one answer for each multiple-choice question.
+                </p>
+                <p>
+                    9. Submit your exam before the timer expires.
+                </p>
+                <p>
+                    10. Good luck !
+                </p>
+                <input type="checkbox" id="acceptCheckbox" class="accept-checkbox">
+                <label for="acceptCheckbox" class="accept-checkbox-label">I have read and accept the exam instructions !</label>
+                <br>
+                <button class="start-exam-button" onclick="startExam()">Start Exam</button>
+            </div>
+        </div>
+    </div>
+    <script>
+        // Function to parse URL parameters
+        function getUrlParams() {
+            const params = {};
+            window.location.search.substring(1).split('&').forEach(param => {
+                const [key, value] = param.split('=');
+                params[key] = decodeURIComponent(value);
+            });
+            return params;
+        }
+
+        // Function to display profile information
+        function displayProfileInfo() {
+            const params = getUrlParams();
+            const profileSection = document.getElementById('profileSection');
+            const profileDetails = `
+                <div class="profile-details">
+                    <label>Name:</label>
+                    <span>${params.name}</span>
+                </div>
+                <div class="profile-details">
+                    <label>Mobile Number:</label>
+                    <span>${params.phone}</span>
+                </div>
+                <div class="profile-details">
+                    <label>Adhar Number:</label>
+                    <span>${params.adhar}</span>
+                </div>
+                <div class="profile-details">
+                    <label>Date of Birth:</label>
+                    <span>${params.dob}</span>
+                </div>
+                <div class="profile-details">
+                    <label>Roll Number:</label>
+                    <span>${params.roll}</span>
+                </div>
+                <div class="profile-details">
+                    <label>Photo:</label>
+                    <img src="${params.photo}" alt="Candidate Photo">
+                </div>
+            `;
+            profileSection.innerHTML = profileDetails;
+        }
+
+        // Function to start the exam if instructions are accepted
+        function startExam() {
+            const acceptCheckbox = document.getElementById('acceptCheckbox');
+            if (acceptCheckbox.checked) {
+                // Start the exam
+                window.location.href = 'exam.html';
+            } else {
+                alert('Please read and accept the exam instructions before starting the exam.');
+            }
+        }
+
+        // Call the function to display profile information when the page loads
+        window.onload = displayProfileInfo;
+    </script>
+</body>
+</html>

@@ -1,0 +1,103 @@
+/* Styles for the container */
+.container {
+    display: flex;
+    justify-content: space-between;
+    margin: 20px;
+}
+
+/* Styles for the categories */
+.categories {
+    width: 25%;
+    font-size: 12px;
+    padding: 10px;
+    border: 1px solid #ccc;
+}
+
+/* Styles for the questions */
+.questions {
+    width: 70%;
+    font-size: 20px; /* Adjust the font size for the questions */
+}
+
+/* Styles for the categories list */
+.categories ul {
+    list-style-type: none;
+    padding: 0;
+}
+
+/* Styles for the categories list items */
+.categories li {
+    margin-bottom: 5px;
+}
+
+/* Styles for the category buttons */
+.categories button {
+    padding: 6px 10px;
+    width: 100%;
+    border: none;
+    background-color: #007bff;
+    color: white;
+    cursor: pointer;
+}
+
+.categories button:hover {
+    background-color: #0056b3;
+}
+
+/* Styles for the questions container */
+.questions {
+    padding: 20px;
+    border: 1px solid #ccc;
+}
+
+.questions h2 {
+    margin-top: 0;
+    font-size: 26px; /* Adjust the font size for the questions */
+}
+
+.questions label {
+    display: block;
+    margin-bottom: 15px;
+    font-size: 18px; /* Keep the font size for the options unchanged */
+}
+
+/* Styles for the navigation buttons */
+#navigationButtons {
+    margin-top: 20px;
+    text-align: center;
+}
+
+#navigationButtons button {
+    margin: 0 5px;
+    padding: 12px 24px;
+    font-size: 18px;
+}
+
+/* New style for the watch sticker */
+.watch-image {
+    width: 24px; /* Adjust size as needed */
+    height: auto; /* Adjust size as needed */
+    position: absolute;
+    top: 50%; /* Adjust position as needed */
+    left: calc(100% + 10px); /* Adjust position as needed */
+    transform: translateY(-50%); /* Center vertically */
+    background-image: url('clock.png'); /* Replace 'clock.png' with the path to your image file */
+    background-size: contain;
+    background-repeat: no-repeat;
+}
+
+/* Apply the sticker to the timer container */
+.timer-container {
+    position: relative;
+}
+
+/* Styles for the timer */
+.timer {
+    text-align: center;
+    font-size: 24px;
+    margin-top: 20px;
+    padding: 10px;
+    border: 2px solid #007bff;
+    border-radius: 5px;
+    background-color: #f0f0f0;
+}
